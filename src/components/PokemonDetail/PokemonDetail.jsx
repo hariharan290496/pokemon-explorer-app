@@ -36,29 +36,65 @@ const PokemonDetail = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold capitalize mb-4">{pokemon.name}</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <PokemonImageGallery sprites={pokemon.sprites} name={pokemon.name} />
-        <div>
-          <h2 className="text-2xl font-semibold mb-2">Details</h2>
-          <ul className="list-disc list-inside">
-            <li>ID: {pokemon.id}</li>
-            <li>Height: {pokemon.height}</li>
-            <li>Weight: {pokemon.weight}</li>
-            <li>Base Experience: {pokemon.baseExperience}</li>
-          </ul>
-          <h3 className="text-xl font-semibold mt-4">Types</h3>
-          <ul className="list-disc list-inside">
-            {pokemon.types.map(type => (
-              <li key={type.name}>{type.name}</li>
-            ))}
-          </ul>
-          <h3 className="text-xl font-semibold mt-4">Abilities</h3>
-          <ul className="list-disc list-inside">
-            {pokemon.abilities.map(ability => (
-              <li key={ability.name}>{ability.name}</li>
-            ))}
-          </ul>
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <h1 className="text-4xl font-bold capitalize mb-4 text-neutral-800">
+            {pokemon.name}
+            <span className="text-2xl text-neutral-400 ml-4">#{pokemon.id.toString().padStart(3, '0')}</span>
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <PokemonImageGallery sprites={pokemon.sprites} name={pokemon.name} />
+            <div className="space-y-8">
+              <div className="bg-neutral-50 rounded-xl p-6">
+                <h2 className="text-2xl font-semibold mb-4 text-neutral-800">Details</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-sm text-neutral-500">Height</p>
+                    <p className="text-lg font-medium">{pokemon.height / 10}m</p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-neutral-500">Weight</p>
+                    <p className="text-lg font-medium">{pokemon.weight / 10}kg</p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-neutral-500">Base Experience</p>
+                    <p className="text-lg font-medium">{pokemon.baseExperience}</p>
+                  </div>
+                </div>
+              </div>
+  
+              {/* Types Section */}
+              <div className="bg-neutral-50 rounded-xl p-6">
+                <h3 className="text-xl font-semibold mb-4 text-neutral-800">Types</h3>
+                <div className="flex gap-3">
+                  {pokemon.types.map(type => (
+                    <span
+                      key={type.name}
+                      className="px-4 py-2 rounded-lg text-white font-medium"
+                      style={{ backgroundColor: colors.type[type.name] }}
+                    >
+                      {type.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+  
+              {/* Abilities Section */}
+              <div className="bg-neutral-50 rounded-xl p-6">
+                <h3 className="text-xl font-semibold mb-4 text-neutral-800">Abilities</h3>
+                <div className="grid gap-3">
+                  {pokemon.abilities.map(ability => (
+                    <div
+                      key={ability.name}
+                      className="bg-white rounded-lg p-4 shadow-sm"
+                    >
+                      <p className="font-medium capitalize">{ability.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

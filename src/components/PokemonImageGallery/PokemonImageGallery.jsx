@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PokemonImageGallery = ({ sprites, name }) => {
   const [selectedImage, setSelectedImage] = useState('official');
@@ -12,6 +12,20 @@ const PokemonImageGallery = ({ sprites, name }) => {
     { key: 'default', label: 'Default' },
     { key: 'shiny', label: 'Shiny' }
   ].filter(type => sprites[type.key]); // Only show available sprites
+
+  useEffect(() => {
+    if (!sprites[selectedImage] && imageTypes.length > 0) {
+      setSelectedImage(imageTypes[0].key);
+    }
+  }, [sprites, selectedImage, imageTypes]);
+
+  if (imageTypes.length === 0) {
+    return (
+      <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+        <p className="text-gray-500">No images available</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full space-y-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const PokemonCard = ({ pokemon }) => {
   const [imageError, setImageError] = useState(false);
@@ -19,20 +19,20 @@ const PokemonCard = ({ pokemon }) => {
     }
   };
 
-  return (
+
+return (
     <Link 
-      to={`/pokemon/${pokemon.id}`}
+      href={`/pokemon/${pokemon.id}`}
       className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="relative pb-[100%] group">
+      <div className="relative pb-[100%]">
         <img
           src={getImageUrl()}
           alt={pokemon.name}
           onError={() => setImageError(true)}
-          className="absolute top-0 left-0 w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+          className="absolute top-0 left-0 w-full h-full object-contain"
           loading="lazy"
         />
-        {/* Shiny version on hover */}
         {pokemon.sprites.shiny && (
           <img
             src={pokemon.sprites.shiny}

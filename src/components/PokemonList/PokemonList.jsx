@@ -9,7 +9,16 @@ import Loading from '../common/Loading';
 import { usePokemonData } from '../../hooks/usePokemonData';
 
 const PokemonList = () => {
-  const { pokemons, loading, error, currentPage, setCurrentPage, totalPages } = usePokemonData();
+  const {
+    pokemons,
+    loading,
+    error,
+    currentPage,
+    totalPages,
+    hasNextPage,
+    hasPreviousPage,
+    setCurrentPage
+  } = usePokemonData();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('id');
   const [filterType, setFilterType] = useState('');

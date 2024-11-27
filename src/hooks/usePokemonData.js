@@ -30,34 +30,7 @@ export const usePokemonData = (limit = 12) => {
           results.map(async (pokemon) => {
             try {
               const details = await pokemonApi.getPokemonDetails(pokemon.name);
-              return {
-                id: details.id,
-                name: details.name,
-                height: details.height,
-                weight: details.weight,
-                types: details.types.map((type) => ({
-                  name: type.type.name,
-                  url: type.type.url,
-                })),
-                abilities: details.abilities.map((ability) => ({
-                  name: ability.ability.name,
-                  isHidden: ability.is_hidden,
-                  slot: ability.slot,
-                })),
-                baseExperience: details.baseExperience,
-                stats: details.stats.map((stat) => ({
-                  name: stat.stat.name,
-                  value: stat.base_stat,
-                })),
-                sprites: {
-                  default: details.sprites.front_default,
-                  shiny: details.sprites.front_shiny,
-                  official:
-                    details.sprites.other["official-artwork"].front_default,
-                  dreamWorld: details.sprites.other.dream_world?.front_default,
-                  home: details.sprites.other.home?.front_default,
-                },
-              };
+              return details;
             } catch (error) {
               console.error(
                 `Error fetching details for ${pokemon.name}:`,
