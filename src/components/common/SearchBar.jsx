@@ -3,11 +3,10 @@
 import { usePokemonContext } from '../../context/PokemonContext';
 
 const SearchBar = () => {
-  const { searchTerm, setSearchTerm, setCurrentPage } = usePokemonContext();
+  const { searchTerm, setSearchTerm } = usePokemonContext();
 
   const handleSearch = (value) => {
     setSearchTerm(value);
-    setCurrentPage(1);
   };
 
   return (

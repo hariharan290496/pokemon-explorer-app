@@ -1,60 +1,51 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { pokemonApi } from '../services/pokemonApi';
-import { ITEMS_PER_PAGE, SORT_OPTIONS } from '../utils/constants';
+import { ITEMS_PER_PAGE } from '../utils/constants';
 
 const PokemonContext = createContext();
 
 export function PokemonProvider({ children }) {
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState(SORT_OPTIONS[0].value);
+  const [sortBy, setSortBy] = useState('id');
   const [filterType, setFilterType] = useState('');
 
-  // Fetch all Pokemon data
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['all-pokemon'],
-    queryFn: async () => {
-      try {
-        // Get list of all Pokemon
-        const { results } = await pokemonApi.getAllPokemon();
-        
-        // Fetch details for Gen 1-Gen 3 pokemon only
-        const detailedPokemon = await Promise.all(
-          results.slice(0, 386).map(async (pokemon) => {
-            try {
-              return await pokemonApi.getPokemonDetails(pokemon.name);
-            } catch (err) {
-              console.error(`Error fetching details for ${pokemon.name}:`, err);
-              return null;
-            }
-          })
-        );
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error
+  } = useInfiniteQuery({
+    queryKey: ['pokemon-infinite'],
+    queryFn: async ({ pageParam = 0 }) => {
+      const offset = pageParam * ITEMS_PER_PAGE;
+      const { results, totalCount, nextPage } = await pokemonApi.getPokemonList(ITEMS_PER_PAGE, offset);
+      
+      const detailedPokemons = await Promise.all(
+        results.map(pokemon => pokemonApi.getPokemonDetails(pokemon.name))
+      );
 
-        // Filter out failed requests
-        const validPokemon = detailedPokemon.filter(p => p !== null);
-        
-        if (validPokemon.length === 0) {
-          throw new Error('No Pokemon data could be loaded');
-        }
-
-        return validPokemon;
-      } catch (err) {
-        console.error('Error in query function:', err);
-        throw new Error('Failed to fetch Pokemon data. Please try again later.');
-      }
+      return {
+        pokemons: detailedPokemons,
+        nextPage,
+        totalCount,
+      };
     },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 2,
+    getNextPageParam: (lastPage, pages) => {
+      if (!lastPage.nextPage) return undefined;
+      return pages.length;
+    },
+    staleTime: 5 * 60 * 1000,
   });
 
-  // Filter and sort Pokemon
-  const filteredAndSortedPokemon = useCallback(() => {
-    if (!data) return [];
+  const allPokemons = data?.pages.flatMap(page => page.pokemons) ?? [];
 
-    return data
+  const filteredAndSortedPokemon = useCallback(() => {
+    return allPokemons
       .filter(pokemon => {
         const matchesSearch = pokemon.name
           .toLowerCase()
@@ -69,32 +60,21 @@ export function PokemonProvider({ children }) {
         if (sortBy === 'id') return a.id - b.id;
         return (a.baseExperience || 0) - (b.baseExperience || 0);
       });
-  }, [data, searchTerm, filterType, sortBy]);
-
-  // Paginate results
-  const paginatedPokemon = useCallback(() => {
-    const filtered = filteredAndSortedPokemon();
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredAndSortedPokemon, currentPage]);
-
-  const totalFilteredPages = Math.ceil(
-    (filteredAndSortedPokemon()?.length || 0) / ITEMS_PER_PAGE
-  );
+  }, [allPokemons, searchTerm, filterType, sortBy]);
 
   const value = {
-    pokemons: paginatedPokemon(),
+    pokemons: filteredAndSortedPokemon(),
     loading: isLoading,
     error: error?.message || null,
-    currentPage,
-    totalPages: totalFilteredPages,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
     searchTerm,
     setSearchTerm,
     sortBy,
     setSortBy,
     filterType,
     setFilterType,
-    setCurrentPage,
   };
 
   return (

@@ -1,27 +1,22 @@
 const BASE_URL = "https://pokeapi.co/api/v2";
 
 export const pokemonApi = {
-  // Get all Pokemon (for initial load)
-  getAllPokemon: async () => {
+  // Get paginated Pokemon list
+  getPokemonList: async (limit = 12, offset = 0) => {
     try {
-      // First, get the total count
-      const response = await fetch(`${BASE_URL}/pokemon?limit=1`);
-      const data = await response.json();
-      const totalCount = data.count;
-
-      console.log("total count: ", totalCount);
-      // Then fetch all Pokemon with the total count
-      const allPokemonResponse = await fetch(
-        `${BASE_URL}/pokemon?limit=${totalCount}`,
+      const response = await fetch(
+        `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`,
       );
-      const allPokemonData = await allPokemonResponse.json();
+      const data = await response.json();
 
       return {
-        results: allPokemonData.results,
-        totalCount,
+        results: data.results,
+        totalCount: data.count,
+        nextPage: data.next,
+        previousPage: data.previous,
       };
     } catch (error) {
-      console.error("Error fetching all Pokemon:", error);
+      console.error("Error fetching Pokemon list:", error);
       throw new Error("Failed to fetch Pokemon list");
     }
   },
