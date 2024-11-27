@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
@@ -12,6 +13,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const authCookie = Cookies.get('auth');
@@ -30,6 +32,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setCurrentUser(null);
     Cookies.remove('auth');
+    router.push('/login');
   };
 
   const value = {

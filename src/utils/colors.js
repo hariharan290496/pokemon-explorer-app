@@ -4,6 +4,7 @@ export const colors = {
     blue: "#3B4CCA", // Pokemon Blue
     yellow: "#FFDE00", // Pokemon Yellow
     gold: "#B3A125", // Pokemon Gold accent
+    indigo: "#4f46e5",
   },
   type: {
     normal: "#A8A878",

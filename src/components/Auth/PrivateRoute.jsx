@@ -1,16 +1,24 @@
-import { useAuth } from '../../context/AuthContext';
-import { useRouter } from 'next/navigation';
+'use client';
+
 import { useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
+import Loading from '../common/Loading';
 
 const PrivateRoute = ({ children }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!loading && !currentUser && pathname !== '/login') {
       router.push('/login');
     }
-  }, [currentUser, router]);
+  }, [currentUser, loading, router, pathname]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return currentUser ? children : null;
 };
