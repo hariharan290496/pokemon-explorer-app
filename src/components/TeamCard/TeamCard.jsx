@@ -33,7 +33,7 @@ const TeamCard = ({ team }) => {
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-xl font-bold">{team.name}</h3>
           <button
-            onClick={() => deleteTeam(team.id)}
+            onClick={() => deleteTeam(team.id, team.name)}
             className="text-red-500 hover:text-red-600 p-2"
             aria-label={`Delete ${team.name}`}
           >
@@ -57,8 +57,8 @@ const TeamCard = ({ team }) => {
                     />
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent link navigation
-                        removePokemonFromTeam(team.id, pokemon.id);
+                        e.stopPropagation(); //Prevent link navigation
+                        removePokemonFromTeam(team.id, pokemon.id, pokemon.name);
                       }}
                       className="absolute -top-2 -right-2 p-1.5 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
                       aria-label={`Remove ${pokemon.name}`}

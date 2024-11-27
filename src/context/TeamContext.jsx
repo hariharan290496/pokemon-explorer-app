@@ -82,10 +82,14 @@ export function TeamProvider({ children }) {
     });
     
     saveTeams(updatedTeams);
+    alert(`${pokemon.name} has been added to the team!`);
     return true;
   };
 
-  const removePokemonFromTeam = (teamId, pokemonId) => {
+  const removePokemonFromTeam = (teamId, pokemonId, pokemonName) => {
+    const confirmed = window.confirm(`Are you sure you want to remove ${pokemonName} from this team?`);
+    if (!confirmed) return;
+
     const updatedTeams = teams.map(t => {
       if (t.id === teamId) {
         return {
@@ -99,7 +103,10 @@ export function TeamProvider({ children }) {
     saveTeams(updatedTeams);
   };
 
-  const deleteTeam = (teamId) => {
+  const deleteTeam = (teamId, teamName) => {
+    const confirmed = window.confirm(`Are you sure you want to delete the team "${teamName}"? This action cannot be undone.`);
+    if (!confirmed) return;
+
     const updatedTeams = teams.filter(t => t.id !== teamId);
     saveTeams(updatedTeams);
   };
