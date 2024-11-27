@@ -1,20 +1,46 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const PokemonCard = ({ pokemon }) => {
+  const [imageError, setImageError] = useState(false);
+
+  // Fallback chain for images
+  const getImageUrl = () => {
+    if (!imageError && pokemon.sprites.official) {
+      return pokemon.sprites.official;
+    } else if (pokemon.sprites.home) {
+      return pokemon.sprites.home;
+    } else if (pokemon.sprites.dreamWorld) {
+      return pokemon.sprites.dreamWorld;
+    } else {
+      return pokemon.sprites.default;
+    }
+  };
+
   return (
     <Link 
       to={`/pokemon/${pokemon.id}`}
       className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="relative pb-[100%]">
+      <div className="relative pb-[100%] group">
         <img
-          src={pokemon.sprites.other['official-artwork'].front_default}
+          src={getImageUrl()}
           alt={pokemon.name}
-          className="absolute top-0 left-0 w-full h-full object-contain"
+          onError={() => setImageError(true)}
+          className="absolute top-0 left-0 w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+          loading="lazy"
         />
+        {/* Shiny version on hover */}
+        {pokemon.sprites.shiny && (
+          <img
+            src={pokemon.sprites.shiny}
+            alt={`Shiny ${pokemon.name}`}
+            className="absolute top-0 left-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            loading="lazy"
+          />
+        )}
       </div>
       <div className="mt-4">
         <h2 className="text-xl font-bold capitalize">{pokemon.name}</h2>

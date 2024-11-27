@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { pokemonApi } from '../../services/pokemonApi';
 import Loading from '../common/Loading';
+import PokemonImageGallery from './PokemonImageGallery';
 
 const PokemonDetail = () => {
   const params = useParams();
@@ -37,13 +38,7 @@ const PokemonDetail = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold capitalize mb-4">{pokemon.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <img
-            src={pokemon.sprites.official}
-            alt={pokemon.name}
-            className="w-full h-auto object-contain"
-          />
-        </div>
+        <PokemonImageGallery sprites={pokemon.sprites} name={pokemon.name} />
         <div>
           <h2 className="text-2xl font-semibold mb-2">Details</h2>
           <ul className="list-disc list-inside">
