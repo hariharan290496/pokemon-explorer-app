@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
 import localFont from "next/font/local";
 import "./globals.css";
+import { AuthProvider } from '../context/AuthContext';
 import Providers from '../components/Providers';
+import NavBar from '../components/NavBar/NavBar';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,16 +20,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} font-sans antialiased`}>
-        <Providers>
-          <nav className="pokemon-gradient text-white">
-            <div className="container mx-auto px-4 py-6">
-              <h1 className="text-3xl font-bold text-center">Pokédex Explorer</h1>
-            </div>
-          </nav>
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
-        </Providers>
+        <AuthProvider>
+          <Providers>
+            <NavBar />
+            <main className="container mx-auto px-4 py-8">
+              {children}
+            </main>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );
