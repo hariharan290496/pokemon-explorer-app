@@ -3,6 +3,7 @@
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { FaSignOutAlt } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function NavBar() {
   const { currentUser, logout } = useAuth();
@@ -16,7 +17,19 @@ export default function NavBar() {
   return (
     <nav className="pokemon-gradient text-white shadow-lg">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Pokédex Explorer</h1>
+        <div className="flex items-center space-x-6">
+          <Link href="/pokemon" className="text-3xl font-bold">
+            Pokédex Explorer
+          </Link>
+          {currentUser && (
+            <Link 
+              href="/teams" 
+              className="text-white hover:text-white/80 transition-colors"
+            >
+              My Teams
+            </Link>
+          )}
+        </div>
         {currentUser && (
           <div className="flex items-center space-x-4">
             <span className="text-sm opacity-75">{currentUser.email}</span>
