@@ -1,43 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'next/navigation';
 import { colors } from '../../utils/colors';
-import { pokemonApi } from '../../services/pokemonApi';
+import { usePokemonDetails } from '../../hooks/usePokemonDetails';
 import Loading from '../common/Loading';
 import PokemonImageGallery from '../PokemonImageGallery/PokemonImageGallery';
+import { STAT_THRESHOLDS } from '../../utils/constants';
 
 const PokemonDetail = () => {
   const params = useParams();
-  const id = params.id;
-  const [pokemon, setPokemon] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      try {
-        setLoading(true);
-        const details = await pokemonApi.getPokemonDetails(id);
-        console.log('Pokemon details:', details);
-        setPokemon(details);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load Pokémon details.');
-        console.error('Error fetching Pokémon details:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, [id]);
+  const { data: pokemon, isLoading: loading, error } = usePokemonDetails(params.id);
 
   const getStatColor = (value) => {
-    if (value >= 150) return 'bg-green-500';
-    if (value >= 100) return 'bg-emerald-400';
-    if (value >= 70) return 'bg-yellow-400';
-    if (value >= 50) return 'bg-orange-400';
+    if (value >= STAT_THRESHOLDS.EXCELLENT) return 'bg-green-500';
+    if (value >= STAT_THRESHOLDS.GREAT) return 'bg-emerald-400';
+    if (value >= STAT_THRESHOLDS.GOOD) return 'bg-yellow-400';
+    if (value >= STAT_THRESHOLDS.FAIR) return 'bg-orange-400';
     return 'bg-red-400';
   };
 
@@ -49,7 +28,7 @@ const PokemonDetail = () => {
   };
 
   if (loading) return <Loading />;
-  if (error) return <div className="text-red-500 text-center">{error}</div>;
+  if (error) return <div className="text-red-500 text-center">{error.message}</div>;
   if (!pokemon) return null;
 
   return (
