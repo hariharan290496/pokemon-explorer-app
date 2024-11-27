@@ -39,6 +39,8 @@ export const pokemonApi = {
         height: data.height,
         weight: data.weight,
         baseExperience: data.base_experience,
+        stats: data.stats,
+        moves: data.moves,
         types: data.types.map((type) => ({
           type: {
             name: type.type.name,
