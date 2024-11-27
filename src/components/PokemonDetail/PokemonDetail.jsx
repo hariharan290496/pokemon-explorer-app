@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { colors } from '../../utils/colors';
 import { pokemonApi } from '../../services/pokemonApi';
 import Loading from '../common/Loading';
 import PokemonImageGallery from '../PokemonImageGallery/PokemonImageGallery';

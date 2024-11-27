@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("./src/utils/colors");
+
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,8 +10,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: colors.primary,
+        type: colors.type,
+        neutral: colors.neutral,
       },
     },
   },

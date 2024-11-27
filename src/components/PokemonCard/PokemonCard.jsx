@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { colors } from '../../utils/colors';
 
 const PokemonCard = ({ pokemon }) => {
   const [imageError, setImageError] = useState(false);
@@ -23,7 +24,7 @@ const PokemonCard = ({ pokemon }) => {
 return (
     <Link 
       href={`/pokemon/${pokemon.id}`}
-      className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300"
+      className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
     >
       <div className="relative pb-[100%]">
         <img
@@ -49,7 +50,7 @@ return (
             <span
               key={type.name}
               className="px-3 py-1 rounded-full text-sm text-white"
-              style={{ backgroundColor: getTypeColor(type.name) }}
+              style={{ backgroundColor: colors.type[type.name] }}
             >
               {type.name}
             </span>
@@ -58,16 +59,6 @@ return (
       </div>
     </Link>
   );
-};
-
-//Basic Type colors. Need to add more
-const getTypeColor = (type) => {
-  const colors = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    water: '#6890F0',
-  };
-  return colors[type] || '#777';
 };
 
 export default PokemonCard;
