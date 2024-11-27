@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { pokemonApi } from '../../services/pokemonApi';
 import Loading from '../common/Loading';
 
 const PokemonDetail = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
