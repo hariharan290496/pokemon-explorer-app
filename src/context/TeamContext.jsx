@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 
 const TeamContext = createContext();
+const STORAGE_KEY = 'pokemon-teams';
 
 export function useTeam() {
   return useContext(TeamContext);
@@ -11,14 +11,28 @@ export function useTeam() {
 
 export function TeamProvider({ children }) {
   const [teams, setTeams] = useState([]);
-  const [activeTeam, setActiveTeam] = useState(null);
 
+  // Load teams from localStorage on mount
   useEffect(() => {
-    const savedTeams = Cookies.get('pokemon-teams');
+    const savedTeams = localStorage.getItem(STORAGE_KEY);
     if (savedTeams) {
-      setTeams(JSON.parse(savedTeams));
+      try {
+        setTeams(JSON.parse(savedTeams));
+      } catch (error) {
+        console.error('Error loading teams:', error);
+        setTeams([]);
+      }
     }
   }, []);
+
+  const saveTeams = (updatedTeams) => {
+    try {
+      setTeams(updatedTeams);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTeams));
+    } catch (error) {
+      console.error('Error saving teams:', error);
+    }
+  };
 
   const createTeam = (name) => {
     const newTeam = {
@@ -27,27 +41,47 @@ export function TeamProvider({ children }) {
       pokemon: []
     };
     const updatedTeams = [...teams, newTeam];
-    setTeams(updatedTeams);
-    Cookies.set('pokemon-teams', JSON.stringify(updatedTeams));
+    saveTeams(updatedTeams);
     return newTeam;
   };
 
   const addPokemonToTeam = (teamId, pokemon) => {
     const team = teams.find(t => t.id === teamId);
-    if (!team || team.pokemon.length >= 6) return false;
     
+    // Check if team exists and isn't full
+    if (!team || team.pokemon.length >= 6) {
+      console.log('TeamContext - Team not found or full');
+      return false;
+    }
+    
+    // Check if pokemon already exists in the team
+    const isPokemonInTeam = team.pokemon.some(p => p.id === pokemon.id);
+    if (isPokemonInTeam) {
+      alert(`${pokemon.name} is already in this team!`);
+      return false;
+    }
+    
+    const spriteUrl = pokemon.sprites.default;
+
     const updatedTeams = teams.map(t => {
       if (t.id === teamId) {
-        return {
+        const updatedTeam = {
           ...t,
-          pokemon: [...t.pokemon, pokemon]
+          pokemon: [...t.pokemon, {
+            id: pokemon.id,
+            name: pokemon.name,
+            types: pokemon.types,
+            sprites: {
+              default: spriteUrl
+            }
+          }]
         };
+        return updatedTeam;
       }
       return t;
     });
     
-    setTeams(updatedTeams);
-    Cookies.set('pokemon-teams', JSON.stringify(updatedTeams));
+    saveTeams(updatedTeams);
     return true;
   };
 
@@ -62,20 +96,16 @@ export function TeamProvider({ children }) {
       return t;
     });
     
-    setTeams(updatedTeams);
-    Cookies.set('pokemon-teams', JSON.stringify(updatedTeams));
+    saveTeams(updatedTeams);
   };
 
   const deleteTeam = (teamId) => {
     const updatedTeams = teams.filter(t => t.id !== teamId);
-    setTeams(updatedTeams);
-    Cookies.set('pokemon-teams', JSON.stringify(updatedTeams));
+    saveTeams(updatedTeams);
   };
 
   const value = {
     teams,
-    activeTeam,
-    setActiveTeam,
     createTeam,
     addPokemonToTeam,
     removePokemonFromTeam,

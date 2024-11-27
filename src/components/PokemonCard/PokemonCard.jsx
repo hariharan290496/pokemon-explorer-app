@@ -12,6 +12,9 @@ const PokemonCard = ({ pokemon }) => {
   const { teams, addPokemonToTeam } = useTeam();
 
   const handleAddToTeam = (teamId) => {
+    console.log('Adding pokemon to team:', pokemon);
+    console.log('Pokemon sprites:', pokemon.sprites);
+    
     addPokemonToTeam(teamId, {
       id: pokemon.id,
       name: pokemon.name,
@@ -66,7 +69,10 @@ const PokemonCard = ({ pokemon }) => {
       </Link>
 
       <button
-        onClick={() => setShowTeamModal(true)}
+        onClick={() => {
+          console.log('Add to team button clicked');
+          setShowTeamModal(true);
+        }}
         className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
         aria-label={`Add ${pokemon.name} to team`}
       >
@@ -74,25 +80,28 @@ const PokemonCard = ({ pokemon }) => {
       </button>
 
       {showTeamModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-bold mb-4">Add to Team</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md mx-auto">
+            <h3 className="text-lg sm:text-xl font-bold mb-4">Add to Team</h3>
             {teams.length === 0 ? (
-              <p className="text-gray-600">No teams available. Create a team first.</p>
+              <p className="text-gray-600 text-sm sm:text-base">No teams available. Create a team first.</p>
             ) : (
               <div className="space-y-2">
                 {teams.map(team => (
                   <button
                     key={team.id}
-                    onClick={() => handleAddToTeam(team.id)}
+                    onClick={() => {
+                      console.log('Team selected:', team.id);
+                      handleAddToTeam(team.id);
+                    }}
                     disabled={team.pokemon.length >= 6}
-                    className={`w-full p-3 text-left rounded-lg transition-colors
+                    className={`w-full p-2.5 sm:p-3 text-left rounded-lg transition-colors text-sm sm:text-base
                       ${team.pokemon.length >= 6 
                         ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                         : 'bg-gray-50 hover:bg-gray-100'}`}
                   >
                     <span className="font-medium">{team.name}</span>
-                    <span className="text-sm text-gray-500 ml-2">
+                    <span className="text-xs sm:text-sm text-gray-500 ml-2">
                       ({team.pokemon.length}/6)
                     </span>
                   </button>
@@ -101,7 +110,7 @@ const PokemonCard = ({ pokemon }) => {
             )}
             <button
               onClick={() => setShowTeamModal(false)}
-              className="mt-4 w-full p-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+              className="mt-4 w-full p-2.5 sm:p-3 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm sm:text-base"
             >
               Cancel
             </button>
