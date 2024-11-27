@@ -40,15 +40,17 @@ const PokemonList = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <SearchBar value={searchTerm} onChange={setSearchTerm} />
-        <SortFilter
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          filterType={filterType}
-          onFilterChange={setFilterType}
-        />
+    <div className="space-y-8">
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <SearchBar value={searchTerm} onChange={setSearchTerm} />
+          <SortFilter
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            filterType={filterType}
+            onFilterChange={setFilterType}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -57,11 +59,13 @@ const PokemonList = () => {
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      <div className="flex justify-center mt-8">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };
