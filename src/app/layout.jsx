@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-filename-extension */
 import localFont from "next/font/local";
 import "./globals.css";
-import { AuthProvider } from '../context/AuthContext';
-import { TeamProvider } from '../context/TeamContext';
 import Providers from '../components/Providers';
 import NavBar from '../components/NavBar/NavBar';
 
@@ -21,16 +19,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} font-sans antialiased`}>
-        <AuthProvider>
-          <TeamProvider>
-            <Providers>
-              <NavBar />
-              <main className="container mx-auto px-4 py-8">
-                {children}
-              </main>
-            </Providers>
-          </TeamProvider>
-        </AuthProvider>
+        <Providers>
+          <NavBar />
+          <main className="container mx-auto px-4 py-8">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
