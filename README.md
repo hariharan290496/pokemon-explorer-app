@@ -23,6 +23,14 @@ Welcome to Pokemon Explorer/Pokedex using React and the [PokeAPI](https://pokeap
 - Detailed Pokémon information pages
 - Loading states and error handling
 - Accessibility features (ARIA labels, keyboard navigation)
+- Team management system with CRUD operations
+- Evolution chain visualization
+- Authentication system with cookie persistence
+- Confirmation dialogs for destructive actions
+- Success/Error notifications for user actions
+- Detailed Pokémon stats with visual indicators
+- Multiple sprite variations with image gallery
+- Move list with learning methods
 
 ### UI Components
 - Loading spinner with accessibility support
@@ -70,15 +78,28 @@ pnpm lint       # Run linting
 ```
 src/
 ├── app/                  # Next.js app directory
-├── components/          
-│   ├── common/          # Reusable components
-│   ├── PokemonCard/     # Pokemon card component
-│   ├── PokemonDetail/   # Pokemon detail view
-│   ├── PokemonList/     # Main pokemon list
-│   └── Providers/       # App providers
-├── context/             # React Context
-├── utils/               # Utility functions
-└── styles/              # Global styles
+│   ├── layout.jsx        # Main layout component
+│   └── teams/            # Teams page
+├── components/           # UI components
+│   ├── common/           # Reusable components (e.g., SearchBar, SortFilter, ScrollToTop)
+│   ├── EvolutionChain/   # Evolution chain component
+│   ├── PokemonCard/      # Pokemon card component
+│   ├── PokemonDetail/    # Pokemon detail view
+│   ├── PokemonImageGallery/ # Image gallery for Pokemon sprites
+│   ├── PokemonList/      # Main Pokemon list
+│   ├── Providers/        # App providers (Auth, Team, Pokemon)
+│   └── TeamCard/         # Team card component
+├── context/              # React Context
+│   ├── AuthContext.jsx   # Authentication context
+│   ├── TeamContext.jsx   # Team management context
+│   └── PokemonContext.jsx # Pokemon data context
+├── hooks/                # Custom hooks
+│   ├── useEvolutionChain.js # Hook for fetching evolution chain
+│   └── usePokemonDetails.js # Hook for fetching Pokemon details
+├── services/             # API services
+│   └── pokemonApi.js     # Service for interacting with PokeAPI
+├── styles/               # Global styles
+└── utils/                # Utility functions and constants
 ```
 
 ## Testing
@@ -98,24 +119,3 @@ The project uses Jest and React Testing Library for testing. Tests cover:
 - Responsive design with mobile-first approach
 - CSS custom properties for theming
 - Custom gradient effects
-
-## Best Practices
-
-- Component-based architecture
-- Proper error boundaries
-- Loading states for better UX
-- Accessibility compliance
-- Comprehensive test coverage
-- Clean code principles
-- Type-safe color system
-- Proper file organization
-
-## Evaluation Criteria
-
-- **Code Quality**: Clean code practices, meaningful variable names, and proper comments
-- **Responsiveness**: Mobile-first design approach
-- **Functionality**: All features working as expected
-- **Best Practices**: React patterns and component organization
-- **Testing**: Comprehensive test coverage
-- **Accessibility**: ARIA labels, keyboard navigation, screen reader support
-- **Performance**: Optimized loading and rendering
