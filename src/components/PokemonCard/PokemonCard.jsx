@@ -45,6 +45,7 @@ return (
           {pokemon.types.map(({ type }) => (
             <span
               key={type.name}
+              data-testid="type-badge"
               className="px-3 py-1 rounded-full text-sm text-white"
               style={{ backgroundColor: colors.type[type.name] }}
             >

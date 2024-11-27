@@ -19,10 +19,14 @@ const SortFilter = () => {
   return (
     <div className="flex flex-col sm:flex-row gap-4 relative">
       <div className="flex-1">
-        <label className="block text-sm font-medium text-neutral-600 mb-2">
+        <label 
+          htmlFor="sort-select" 
+          className="block text-sm font-medium text-neutral-600 mb-2"
+        >
           Sort by
         </label>
         <select
+          id="sort-select"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
           className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-lg
@@ -37,10 +41,14 @@ const SortFilter = () => {
       </div>
       
       <div className="flex-1">
-        <label className="block text-sm font-medium text-neutral-600 mb-2">
+        <label 
+          htmlFor="type-select" 
+          className="block text-sm font-medium text-neutral-600 mb-2"
+        >
           Filter by type
         </label>
         <select
+          id="type-select"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
           className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-lg

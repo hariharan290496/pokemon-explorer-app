@@ -5,10 +5,6 @@ import { usePokemonContext } from '../../context/PokemonContext';
 const SearchBar = () => {
   const { searchTerm, setSearchTerm } = usePokemonContext();
 
-  const handleSearch = (value) => {
-    setSearchTerm(value);
-  };
-
   return (
     <div className="relative flex-1">
       <label className="block text-sm font-medium text-neutral-600 mb-2">
@@ -18,12 +14,13 @@ const SearchBar = () => {
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by name..."
           className="w-full px-4 py-2.5 pl-10 bg-neutral-50 border border-neutral-200 rounded-lg
                    focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent"
         />
         <svg
+          data-testid="search-icon"
           className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400"
           fill="none"
           stroke="currentColor"
