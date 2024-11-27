@@ -58,6 +58,7 @@ export const pokemonApi = {
           home: data.sprites?.other?.home?.front_default || null,
           dreamWorld: data.sprites?.other?.dream_world?.front_default || null,
         },
+        species: data.species,
       };
     } catch (error) {
       console.error("Error fetching Pokemon details:", error);

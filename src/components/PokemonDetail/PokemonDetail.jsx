@@ -7,10 +7,13 @@ import { usePokemonDetails } from '../../hooks/usePokemonDetails';
 import Loading from '../common/Loading';
 import PokemonImageGallery from '../PokemonImageGallery/PokemonImageGallery';
 import { STAT_THRESHOLDS } from '../../utils/constants';
+import { useEvolutionChain } from '../../hooks/useEvolutionChain';
+import EvolutionChain from '../EvolutionChain/EvolutionChain';
 
 const PokemonDetail = () => {
   const params = useParams();
   const { data: pokemon, isLoading: loading, error } = usePokemonDetails(params.id);
+  const { data: evolutionData } = useEvolutionChain(pokemon?.species?.url);
 
   const getStatColor = (value) => {
     if (value >= STAT_THRESHOLDS.EXCELLENT) return 'bg-green-500';
@@ -133,6 +136,12 @@ const PokemonDetail = () => {
                   ))}
                 </div>
               </div>
+
+              {evolutionData && (
+                <div className="mb-8">
+                  <EvolutionChain chain={evolutionData.chain} />
+                </div>
+              )}
 
               {/* Updated Moves Section */}
               <div className="bg-neutral-50 rounded-xl p-6">
