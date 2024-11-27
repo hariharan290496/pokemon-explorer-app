@@ -6,6 +6,7 @@ import PokemonCard from '../PokemonCard/PokemonCard';
 import SearchBar from '../common/SearchBar';
 import SortFilter from '../common/SortFilter';
 import Loading from '../common/Loading';
+import ScrollToTop from '../common/ScrollToTop';
 
 const PokemonList = () => {
   const {
@@ -119,6 +120,8 @@ const PokemonList = () => {
           )}
         </>
       )}
+
+      <ScrollToTop />
     </div>
   );
 };
