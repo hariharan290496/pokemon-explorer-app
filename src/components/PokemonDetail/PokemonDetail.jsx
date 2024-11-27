@@ -43,6 +43,7 @@ const PokemonDetail = () => {
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
+              {/* Image gallery */}
               <PokemonImageGallery sprites={pokemon.sprites} name={pokemon.name} />
               
               {/* Stats Section */}
@@ -105,48 +106,70 @@ const PokemonDetail = () => {
                 </div>
               </div>
 
-              {/* Abilities Section */}
+              {/* Updated Abilities Section */}
               <div className="bg-neutral-50 rounded-xl p-6">
                 <h3 className="text-xl font-semibold mb-4 text-neutral-800">Abilities</h3>
                 <div className="grid gap-3">
                   {pokemon.abilities?.map((ability) => (
                     <div
                       key={ability.ability.name}
-                      className="bg-white rounded-lg p-4 shadow-sm"
+                      className="bg-white rounded-lg p-4 shadow-sm border border-neutral-100 
+                               hover:shadow-md transition-all duration-200"
                     >
-                      <p className="font-medium capitalize">{ability.ability.name.replace('-', ' ')}</p>
-                      {ability.is_hidden && (
-                        <p className="text-sm text-neutral-500 mt-1">Hidden Ability</p>
-                      )}
+                      <div className="flex items-center justify-between">
+                        <p className="font-medium capitalize text-neutral-800">
+                          {ability.ability.name.replace('-', ' ')}
+                        </p>
+                        {ability.is_hidden && (
+                          <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
+                            Hidden
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-neutral-500 mt-1">
+                        {ability.slot === 1 ? 'Primary' : ability.slot === 2 ? 'Secondary' : 'Special'} Ability
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Moves Section */}
+              {/* Updated Moves Section */}
               <div className="bg-neutral-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4 text-neutral-800">Moves</h3>
-                <div className="grid gap-2 max-h-[400px] overflow-y-auto pr-2">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-semibold text-neutral-800">Moves</h3>
+                  <span className="text-sm text-neutral-500">
+                    Showing first {Math.min(pokemon.moves.length, 20)} of {pokemon.moves.length}
+                  </span>
+                </div>
+                <div className="grid gap-2 max-h-[400px] overflow-y-auto pr-2 
+                              scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-neutral-100">
                   {pokemon.moves.slice(0, 20).map((move) => (
                     <div
                       key={move.move.name}
-                      className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                      className="bg-white rounded-lg p-4 shadow-sm border border-neutral-100
+                               hover:shadow-md transition-all duration-200"
                     >
                       <div className="flex justify-between items-center">
-                        <p className="font-medium capitalize">
-                          {move.move.name.replace('-', ' ')}
-                        </p>
-                        <div className="text-sm text-neutral-500">
+                        <div>
+                          <p className="font-medium capitalize text-neutral-800">
+                            {move.move.name.replace('-', ' ')}
+                          </p>
+                          <p className="text-sm text-neutral-500 mt-1 capitalize">
+                            {move.version_group_details[0].move_learn_method.name.replace('-', ' ')}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
                           {move.version_group_details[0].level_learned_at > 0 && (
-                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                              Lvl {move.version_group_details[0].level_learned_at}
-                            </span>
+                            <div className="flex flex-col items-end">
+                              <span className="text-xs text-neutral-500">Level</span>
+                              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-medium">
+                                {move.version_group_details[0].level_learned_at}
+                              </span>
+                            </div>
                           )}
                         </div>
                       </div>
-                      <p className="text-sm text-neutral-500 mt-1 capitalize">
-                        Learn: {move.version_group_details[0].move_learn_method.name.replace('-', ' ')}
-                      </p>
                     </div>
                   ))}
                 </div>

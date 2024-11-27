@@ -2,17 +2,22 @@
 
 import { usePokemonContext } from '../../context/PokemonContext';
 import { SORT_OPTIONS, POKEMON_TYPES } from '../../utils/constants';
+import { TiDelete } from 'react-icons/ti';
 
 const SortFilter = () => {
   const { 
     sortBy, 
     setSortBy, 
     filterType, 
-    setFilterType 
+    setFilterType,
+    searchTerm,
+    clearFilters 
   } = usePokemonContext();
 
+  const hasActiveFilters = filterType || sortBy !== 'id_asc' || searchTerm;
+
   return (
-    <div className="flex flex-col sm:flex-row gap-4">
+    <div className="flex flex-col sm:flex-row gap-4 relative">
       <div className="flex-1">
         <label className="block text-sm font-medium text-neutral-600 mb-2">
           Sort by
@@ -49,6 +54,17 @@ const SortFilter = () => {
           ))}
         </select>
       </div>
+
+      {hasActiveFilters && (
+        <button
+          onClick={clearFilters}
+          className="absolute -top-2 -right-2 text-neutral-500 hover:text-red-500 
+                   transition-all duration-200"
+          title="Clear all filters"
+        >
+          <TiDelete className="w-7 h-7" />
+        </button>
+      )}
     </div>
   );
 };

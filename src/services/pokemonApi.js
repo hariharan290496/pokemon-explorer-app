@@ -1,9 +1,20 @@
 const BASE_URL = "https://pokeapi.co/api/v2";
+import { MAX_POKEMON_LIMIT } from "../utils/constants";
 
 export const pokemonApi = {
   // Get paginated Pokemon list
   getPokemonList: async (limit = 12, offset = 0) => {
     try {
+      // Ensure we don't exceed the maximum limit
+      if (offset >= MAX_POKEMON_LIMIT) {
+        return {
+          results: [],
+          totalCount: MAX_POKEMON_LIMIT,
+          nextPage: null,
+          previousPage: null,
+        };
+      }
+
       const response = await fetch(
         `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`,
       );
@@ -11,8 +22,8 @@ export const pokemonApi = {
 
       return {
         results: data.results,
-        totalCount: data.count,
-        nextPage: data.next,
+        totalCount: Math.min(data.count, MAX_POKEMON_LIMIT),
+        nextPage: offset + limit < MAX_POKEMON_LIMIT ? data.next : null,
         previousPage: data.previous,
       };
     } catch (error) {

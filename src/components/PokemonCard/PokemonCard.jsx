@@ -27,6 +27,7 @@ return (
       className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
     >
       <div className="relative pb-[100%]">
+        {/* Image */}
         <img
           src={getImageUrl()}
           alt={pokemon.name}
@@ -34,17 +35,12 @@ return (
           className="absolute top-0 left-0 w-full h-full object-contain"
           loading="lazy"
         />
-        {pokemon.sprites.shiny && (
-          <img
-            src={pokemon.sprites.shiny}
-            alt={`Shiny ${pokemon.name}`}
-            className="absolute top-0 left-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            loading="lazy"
-          />
-        )}
       </div>
       <div className="mt-4">
+        {/* Name */}
         <h2 className="text-xl font-bold capitalize">{pokemon.name}</h2>
+
+        {/* Type */}
         <div className="flex gap-2 mt-2">
           {pokemon.types.map(({ type }) => (
             <span

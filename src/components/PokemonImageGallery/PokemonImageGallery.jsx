@@ -11,9 +11,10 @@ const PokemonImageGallery = ({ sprites, name }) => {
     { key: 'dreamWorld', label: 'Dream World' },
     { key: 'default', label: 'Default' },
     { key: 'shiny', label: 'Shiny' }
-  ].filter(type => sprites[type.key]); // Only show available sprites
+  ].filter(type => sprites[type.key]); //Only show available sprites
 
   useEffect(() => {
+    //Fall back useEffect for image to display official artwork
     if (!sprites[selectedImage] && imageTypes.length > 0) {
       setSelectedImage(imageTypes[0].key);
     }
