@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { pokemonApi } from '../../services/pokemonApi';
 import Loading from '../common/Loading';
-import PokemonImageGallery from './PokemonImageGallery';
+import PokemonImageGallery from '../PokemonImageGallery/PokemonImageGallery';
 
 const PokemonDetail = () => {
   const params = useParams();
